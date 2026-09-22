@@ -104,8 +104,11 @@ class Jobs extends Component {
   getJobs = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const jwtToken = Cookies.get('jwt_token')
-    const {searchInput, activeSalaryRangeId, activeEmploymentTypeId} =
-      this.state
+    const {
+      searchInput,
+      activeSalaryRangeId,
+      activeEmploymentTypeId,
+    } = this.state
 
     const joinedEmployment = activeEmploymentTypeId.join(',')
 
