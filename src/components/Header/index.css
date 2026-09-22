@@ -3,6 +3,9 @@
   justify-content: center;
   background-color: #272727;
   width: 100vw;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
 }
 
 .nav-content {

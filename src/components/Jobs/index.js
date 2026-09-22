@@ -19,25 +19,51 @@ const apiStatusConstants = {
 }
 
 class Jobs extends Component {
+  /*
   state = {
     apiStatus: apiStatusConstants.initial,
     searchInput: '',
     jobsList: [],
     activeSalaryRangeId: '',
     activeEmploymentTypeId: [],
+    activeLocationBasedId: [],
+  }
+  */
+
+  state = {
+    apiStatus: apiStatusConstants.initial,
+    searchInput: '',
+    allJobs: [], // new
+    jobsList: {jobs: [], total: 0},
+    activeSalaryRangeId: '',
+    activeEmploymentTypeId: [],
+    activeLocationBasedId: [],
   }
 
   componentDidMount() {
     this.getJobs()
   }
 
+  /*
   getJobs = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const jwtToken = Cookies.get('jwt_token')
-    const {searchInput, activeSalaryRangeId, activeEmploymentTypeId} =
-      this.state
+    const {
+      searchInput,
+      activeSalaryRangeId,
+      activeEmploymentTypeId,
+      activeLocationBasedId,
+    } = this.state
     const joinedEmployment = activeEmploymentTypeId.join(',')
-    const apiUrl = `https://apis.ccbp.in/jobs?employment_type=${joinedEmployment}&minimum_package=${activeSalaryRangeId}&search=${searchInput}`
+    const joinedLocation = activeLocationBasedId.join(',')
+
+    console.log('activeLocationBasedId', activeLocationBasedId)
+    console.log('joinedLocation', joinedLocation)
+
+    const apiUrl = `https://apis.ccbp.in/jobs?location=${joinedLocation}&employment_type=${joinedEmployment}&minimum_package=${activeSalaryRangeId}&search=${searchInput}`
+
+    console.log('apiUrl', apiUrl)
+
     const options = {
       method: 'GET',
       headers: {
@@ -45,8 +71,12 @@ class Jobs extends Component {
       },
     }
     const response = await fetch(apiUrl, options)
+
     if (response.ok) {
       const fetchedData = await response.json()
+
+      console.log('fetchedData.jobs', fetchedData.jobs)
+
       const updatedJobsData = fetchedData.jobs.map(eachJob => ({
         companyLogoUrl: eachJob.company_logo_url,
         employmentType: eachJob.employment_type,
@@ -69,6 +99,93 @@ class Jobs extends Component {
       this.setState({apiStatus: apiStatusConstants.failure})
     }
   }
+*/
+
+  getJobs = async () => {
+    this.setState({apiStatus: apiStatusConstants.inProgress})
+    const jwtToken = Cookies.get('jwt_token')
+    const {searchInput, activeSalaryRangeId, activeEmploymentTypeId} =
+      this.state
+
+    const joinedEmployment = activeEmploymentTypeId.join(',')
+
+    const apiUrl =
+      `https://apis.ccbp.in/jobs` +
+      `?employment_type=${joinedEmployment}` +
+      `&minimum_package=${activeSalaryRangeId}` +
+      `&location=` +
+      `&search=${searchInput}`
+
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    }
+
+    const response = await fetch(apiUrl, options)
+    if (response.ok) {
+      const fetchedData = await response.json()
+
+      const updatedJobsData = fetchedData.jobs.map(eachJob => ({
+        companyLogoUrl: eachJob.company_logo_url,
+        employmentType: eachJob.employment_type,
+        id: eachJob.id,
+        jobDescription: eachJob.job_description,
+        location: eachJob.location,
+        packagePerAnnum: eachJob.package_per_annum,
+        rating: eachJob.rating,
+        title: eachJob.title,
+      }))
+
+      this.setState(
+        {
+          allJobs: updatedJobsData,
+          jobsList: {
+            jobs: updatedJobsData,
+            total: fetchedData.total,
+          },
+          apiStatus: apiStatusConstants.success,
+        },
+        () => {
+          // After fetching, apply location filter if any
+          this.applyLocationFilter()
+        },
+      )
+    } else {
+      this.setState({apiStatus: apiStatusConstants.failure})
+    }
+  }
+
+  applyLocationFilter = () => {
+    const {allJobs, activeLocationBasedId} = this.state
+
+    const filtered =
+      activeLocationBasedId.length === 0
+        ? allJobs
+        : allJobs.filter(job => activeLocationBasedId.includes(job.location))
+
+    this.setState(prevState => ({
+      jobsList: {
+        ...prevState.jobsList,
+        jobs: filtered,
+      },
+    }))
+  }
+
+  changeEmploymentType = types => {
+    this.setState({activeEmploymentTypeId: types}, this.getJobs)
+  }
+
+  changeSalaryRange = range => {
+    this.setState({activeSalaryRangeId: range}, this.getJobs)
+  }
+
+  changeLocationBased = places => {
+    this.setState({activeLocationBasedId: places}, () => {
+      this.applyLocationFilter()
+    })
+  }
 
   changeSearchInput = event => {
     this.setState({searchInput: event.target.value})
@@ -77,6 +194,39 @@ class Jobs extends Component {
   clickSearch = () => {
     this.getJobs()
   }
+
+  /*
+  changeEmploymentType = types => {
+    this.setState({activeEmploymentTypeId: types}, this.getJobs)
+  }
+
+  changeSalaryRange = range => {
+    this.setState({activeSalaryRangeId: range}, this.getJobs)
+  }
+
+  
+  changeLocationBased = places => {
+    this.setState({activeLocationBasedId: places}, this.getJobs)
+  }
+
+
+  changeLocationBased = places => {
+    this.setState({activeLocationBasedId: places}, () => {
+      // Optionally re-fetch if you want employment/salary/search to refresh
+      this.getJobsWithoutLocationFilter()
+      this.applyLocationFilter()
+    })
+  }
+
+  changeSearchInput = event => {
+    this.setState({searchInput: event.target.value})
+  }
+
+  clickSearch = () => {
+    this.getJobs()
+  }
+
+  */
 
   renderSuccessView = () => {
     const {searchInput, jobsList} = this.state
@@ -162,17 +312,13 @@ class Jobs extends Component {
     }
   }
 
-  changeEmploymentType = types => {
-    this.setState({activeEmploymentTypeId: types}, this.getJobs)
-  }
-
-  changeSalaryRange = range => {
-    this.setState({activeSalaryRangeId: range}, this.getJobs)
-  }
-
   render() {
-    const {searchInput, activeSalaryRangeId, activeEmploymentTypeId} =
-      this.state
+    const {
+      searchInput,
+      activeSalaryRangeId,
+      activeEmploymentTypeId,
+      activeLocationBasedId,
+    } = this.state
 
     return (
       <div className="jobs-container">
@@ -182,8 +328,10 @@ class Jobs extends Component {
             searchInput={searchInput}
             activeEmploymentTypeId={activeEmploymentTypeId}
             activeSalaryRangeId={activeSalaryRangeId}
+            activeLocationBasedId={activeLocationBasedId}
             changeEmploymentType={this.changeEmploymentType}
             changeSalaryRange={this.changeSalaryRange}
+            changeLocationBased={this.changeLocationBased}
             changeSearchInput={this.changeSearchInput}
             clickSearch={this.clickSearch}
           />

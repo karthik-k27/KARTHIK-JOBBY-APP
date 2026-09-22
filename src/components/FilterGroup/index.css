@@ -1,3 +1,15 @@
+.sidebar-container {
+  display: flex;
+  padding: 10px;
+  position: sticky;
+  top: 150px;
+  margin-top: 50px;
+  width: 100%;
+  max-width: 500px;
+  height: 90vh;
+  overflow-y: auto;
+}
+
 .filter-group-container {
   display: flex;
   flex-direction: column;
@@ -122,4 +134,37 @@
   color: #4f46e5;
   height: 10px;
   width: 10px;
+}
+
+.filter-location-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.filter-location-heading {
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Roboto';
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.filter-location-based-list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+}
+
+.filter-location-based-container {
+  display: flex;
+  margin-bottom: 10px;
+  list-style-type: none;
+}
+
+.location-label {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: 'Roboto';
+  margin-left: 10px;
 }

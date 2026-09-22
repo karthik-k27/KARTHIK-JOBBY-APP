@@ -41,6 +41,54 @@ const salaryRangesList = [
   },
 ]
 
+/*
+const locationBasedList = [
+  {
+    label: 'Hyderabad',
+    locationBasedId: 'HYDERABAD',
+  },
+  {
+    label: 'Bangalore',
+    locationBasedId: 'BANGALORE',
+  },
+  {
+    label: 'Chennai',
+    locationBasedId: 'CHENNAI',
+  },
+  {
+    label: 'Delhi',
+    locationBasedId: 'DELHI',
+  },
+  {
+    label: 'Mumbai',
+    locationBasedId: 'MUMBAI',
+  },
+]
+*/
+
+const locationBasedList = [
+  {
+    label: 'Hyderabad',
+    locationBasedId: 'Hyderabad',
+  },
+  {
+    label: 'Bangalore',
+    locationBasedId: 'Bangalore',
+  },
+  {
+    label: 'Chennai',
+    locationBasedId: 'Chennai',
+  },
+  {
+    label: 'Delhi',
+    locationBasedId: 'Delhi',
+  },
+  {
+    label: 'Mumbai',
+    locationBasedId: 'Mumbai',
+  },
+]
+
 const FilterGroup = props => {
   const {
     searchInput,
@@ -48,6 +96,8 @@ const FilterGroup = props => {
     changeEmploymentType,
     activeSalaryRangeId,
     changeSalaryRange,
+    activeLocationBasedId,
+    changeLocationBased,
     changeSearchInput,
     clickSearch,
   } = props
@@ -75,8 +125,17 @@ const FilterGroup = props => {
     changeSalaryRange(event.target.value)
   }
 
+  const onChangeLocationBased = event => {
+    const {value, checked} = event.target
+    if (checked) {
+      changeLocationBased([...activeLocationBasedId, value])
+    } else {
+      changeLocationBased(activeLocationBasedId.filter(base => base !== value))
+    }
+  }
+
   return (
-    <>
+    <div className="sidebar-container">
       <div className="filter-group-container">
         <div className="filter-mobile-input-container">
           <input
@@ -143,8 +202,34 @@ const FilterGroup = props => {
             ))}
           </ul>
         </div>
+        <hr className="filter-seperator" />
+        <div className="filter-location-container">
+          <h1 className="filter-location-heading">Location</h1>
+          <ul className="filter-location-based-list">
+            {locationBasedList.map(each => (
+              <li className="filter-location-based-container" key={each.label}>
+                <label
+                  className="location-label"
+                  htmlFor={each.locationBasedId}
+                >
+                  <input
+                    className="filter-input-checkbox"
+                    id={each.locationBasedId}
+                    type="checkbox"
+                    value={each.locationBasedId}
+                    checked={activeLocationBasedId.includes(
+                      each.locationBasedId,
+                    )}
+                    onChange={onChangeLocationBased}
+                  />
+                  {each.label}
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
