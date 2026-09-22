@@ -1,0 +1,55 @@
+.jobby-profile-container {
+  display: flex;
+  flex-direction: column;
+  background: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  background-size: cover;
+  width: 90%;
+  max-width: 300px;
+  border: none;
+  border-radius: 10px;
+  padding: 20px 10px;
+  margin-top: 10px;
+}
+
+.profile-image {
+  border-radius: 40px;
+  height: 40px;
+  width: 40px;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.profile-name {
+  color: #6366f1;
+  font-size: 24px;
+  font-family: 'Roboto';
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.profile-bio {
+  color: #64748b;
+  font-size: 12px;
+  font-family: 'Roboto';
+  margin-bottom: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.retry-button {
+  background-color: #6366f1;
+  color: #ffffff;
+  font-size: 12px;
+  font-family: 'Roboto';
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+}

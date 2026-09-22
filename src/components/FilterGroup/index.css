@@ -1,0 +1,125 @@
+.filter-group-container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 350px;
+  margin-left: 50px;
+}
+
+.filter-mobile-input-container {
+  display: flex;
+  width: 90%;
+  border: 1px solid #cbd5e1;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 768px) {
+  .filter-mobile-input-container {
+    display: none;
+  }
+}
+
+.search-input {
+  color: #cbd5e1;
+  padding: 4px 8px;
+  background-color: transparent;
+}
+
+.search-button {
+  padding: 10px;
+  background-color: #2c364c;
+  text-align: center;
+}
+
+.search-icon {
+  color: #cbd5e1;
+  height: 15px;
+  width: 15px;
+  margin-left: 2px 5px;
+}
+
+.filter-seperator {
+  width: 90%;
+  border: 1px solid #cbd5e1;
+  margin: 10px 5px;
+}
+
+.filter-employment-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-employment-heading {
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Roboto';
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.filter-employment-types-list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+}
+
+.filter-employment-type-container {
+  display: flex;
+  margin-bottom: 10px;
+  list-style-type: none;
+}
+
+.employment-label {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: 'Roboto';
+  margin-left: 10px;
+}
+
+.filter-input-checkbox {
+  background-color: #ffffff;
+  color: #4f46e5;
+  height: 10px;
+  width: 10px;
+}
+
+.filter-salary-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.filter-salary-heading {
+  color: #ffffff;
+  font-size: 14px;
+  font-family: 'Roboto';
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.filter-salary-range-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0px;
+}
+
+.filter-salary-range {
+  display: flex;
+  margin-bottom: 10px;
+  list-style-type: none;
+}
+
+.salary-label {
+  color: #ffffff;
+  font-size: 12px;
+  font-family: 'Roboto';
+  margin-left: 10px;
+}
+
+.filter-radio-input {
+  background-color: #ffffff;
+  color: #4f46e5;
+  height: 10px;
+  width: 10px;
+}
